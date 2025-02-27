@@ -135,3 +135,11 @@ def write_excel_sales_info(data: list, action: str, tg_id: int) -> str:
 
     df.to_excel(path, index=False)
     return path
+
+
+def update_phone_number(phone_number: str) -> str:
+    if phone_number[0] == '+':
+        return phone_number
+    else:
+        new_phone_number = '+' + phone_number
+        return new_phone_number

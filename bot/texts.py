@@ -9,7 +9,7 @@ from keyboards.btn_text import *
 from keyboards.btn_inline import btn_to_cart_menu, btn_apply
 from utils import RegisterState, ShowProductState, GetFeedbackState
 from database.database_manager import SQLActionManager as SAM
-from support import check_fio, check_email, manager_staff, remove_code_fio
+from support import check_fio, check_email, manager_staff, remove_code_fio, update_phone_number
 
 txt_router = Router()
 
@@ -88,6 +88,7 @@ async def reach_btn_contact(message: Message, state: FSMContext):
         fio = data['fio']
         email = data['email']
         phone_number = message.contact.phone_number
+        phone_number = update_phone_number(str(phone_number))
         is_admin, is_ceo, is_client = manager_staff(fio)
 
         fio_new = remove_code_fio(fio)
@@ -150,6 +151,16 @@ async def show_product_info(message: Message, state: FSMContext):
         text = text_info_product(lang, title, price, structure, vitamins, description, quantity)
         await message.answer_photo(photo=FSInputFile(image_path), caption=text,
                                    reply_markup=btn_to_cart_menu(lang, pk, price))
+
+
+@txt_router.message(F.text.in_(['Отзывы покупателей 👩‍💻👨‍💻', "Mijozlarning sharhlari 👩‍💻👨‍💻"]))
+async def react_feedback(message: Message):
+    chat_id = message.chat.id
+    lang = db_users.get_lang(message.chat.id)
+
+    text = text_link_channel[lang]
+    await message.answer(text, reply_markup=btn_start_menu(lang, chat_id))
+    await message.answer('https://t.me/sogliq_yoli')
 
 
 @txt_router.message(F.text.in_(['Обратная связь 📞', 'Fikr-mulohaza 📞']))
@@ -232,6 +243,3 @@ async def reach_btn_cart(message: Message):
     text = text_cart(lang, cart_products, total_quantity, total_price)
 
     await message.answer(text, reply_markup=btn_apply(cart_id, lang))
-
-
-

@@ -32,6 +32,7 @@ def btn_start_menu(lang: str, tg_id: int) -> Any:
         btn = [
             [KeyboardButton(text='Посмотреть категории 📚' if lang == 'RU' else "Kategoriyalarni ko'rish 📚")],
             [KeyboardButton(text='Обратная связь 📞' if lang == 'RU' else "Fikr-mulohaza 📞")],
+            [KeyboardButton(text='Отзывы покупателей 👩‍💻👨‍💻' if lang == 'RU' else "Mijozlarning sharhlari 👩‍💻👨‍💻")],
             [KeyboardButton(text='Корзина 🛒' if lang == 'RU' else "Savat 🛒")],
             [KeyboardButton(text='Поменять язык 🌍' if lang == 'RU' else "Tilni o'zgartiring 🌍")]
         ]

@@ -7,8 +7,8 @@ text_register = {
 def text_start(lang, role):
     if role == 'CLIENT':
         text = {
-            'RU': 'Здравствуй, что бы заказать нажмите на Посмотреть категории 📚',
-            'UZ': "Salom, buyurtma berish uchun bosing kategoriyalarni ko'rish 📚",
+            'RU': 'Здравствуй, что бы заказать нажмите на кнопку: Посмотреть категории 📚',
+            'UZ': "Salom, buyurtma berish uchun tugmani bosing: kategoriyalarni ko'rish 📚",
         }
         return text[lang]
     else:
@@ -59,6 +59,11 @@ error_text_get_price = {
     'UZ': "Siz noto'g'ri qiymatni kiritdingiz, u faqat raqamlardan iborat bo'lishi kerak. Belgilar bo'lmasligi kerak, qayta kiriting"
 }
 
+text_link_channel = {
+    'RU': 'Ссылка на телеграмм, канал в котором вы можете посмотреть отзывы наших покупателей',
+    'UZ': "Telegram-ga havola, unda siz bizning mijozlarimizning sharhlarini ko'rishingiz mumkin"
+}
+
 error_text_get_quantity = {
     'RU': 'Вы ввели неправильную количество, она должны состоять только из цифре. Символов не должно быть, введите заново',
     'UZ': "Siz noto'g'ri miqdorni kiritdingiz, u faqat raqamdan iborat bo'lishi kerak. Belgilar bo'lmasligi kerak, qayta kiriting"
@@ -98,23 +103,53 @@ error_text_fio_and_phone = {
 def text_info_product(lang: str, title: str, price: str, structure: str,
                       vitamins: str, description: str, quantity: str) -> str:
     if lang == 'RU':
-        return f'''
-Название продукта: {title}\n 
-Стоимость: {price}\n 
-Кол-во: {quantity}\n 
-Состав: {structure}\n 
-Витамины: {vitamins}\n 
-Описание: {description}
+        if structure == '-' and vitamins == '-':
+            text = f'''
+Название продукта: {title}.\n 
+Стоимость: {price}.\n 
+Кол-во: {quantity}.\n 
+Описание: {description}.
+
+Товар не является лекарственным средством 
 '''
+            return text
+        else:
+            text = f'''
+Название продукта: {title}.\n 
+Стоимость: {price}.\n 
+Кол-во: {quantity}.\n 
+Состав: {structure}.\n 
+Витамины: {vitamins}.\n 
+Описание: {description}.
+
+Товар не является лекарственным средством 
+'''
+        return text
+
     elif lang == 'UZ':
-        return f'''
+
+        if structure == '-' and vitamins == '-':
+            text = f'''
+Mahsulot nomi: {title}\n 
+Narxi: {price}\n 
+Soni: {quantity}\n 
+Tavsif: {description}
+
+Mahsulot dori emas
+        '''
+            return text
+        else:
+            text = f'''
 Mahsulot nomi: {title}\n 
 Narxi: {price}\n 
 Soni: {quantity}\n 
 Tarkibi: {structure}\n 
 Vitaminlar: {vitamins}\n 
 Tavsif: {description}
+
+Mahsulot dori emas
 '''
+        return text
 
 
 def text_cart(lang: str, cart_products: tuple, total_quantity: str, total_price: str) -> str:
