@@ -150,6 +150,7 @@ async def get_description_product(message: Message, state: FSMContext):
     await state.set_state(CreateProductState.structure)
 
 
+
 @txt_admin_router.message(CreateProductState.structure)
 async def get_quantity_product(message: Message, state: FSMContext):
     structure = message.text
