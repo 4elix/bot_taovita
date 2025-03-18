@@ -134,6 +134,8 @@ class SQLUsersPart(SQLBaseConnect):
     def get_list_tg_id_admin(self) -> list:
         sql = '''
             SELECT tg_id FROM users WHERE is_admin = true AND is_ceo = true
+            UNION ALL
+            SELECT tg_id FROM users WHERE is_admin = true AND is_ceo = false;
         '''
         list_tg_id = self.manager(sql, fetchall=True)
         return [tg_id[0] for tg_id in list_tg_id]

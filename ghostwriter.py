@@ -64,11 +64,6 @@ text_link_channel = {
     'UZ': "Telegram-ga havola, unda siz bizning mijozlarimizning sharhlarini ko'rishingiz mumkin"
 }
 
-error_text_get_quantity = {
-    'RU': 'Вы ввели неправильную количество, она должны состоять только из цифре. Символов не должно быть, введите заново',
-    'UZ': "Siz noto'g'ri miqdorni kiritdingiz, u faqat raqamdan iborat bo'lishi kerak. Belgilar bo'lmasligi kerak, qayta kiriting"
-}
-
 text_list_categories = {
     'RU': 'Продукты данной категории',
     'UZ': 'Ushbu toifadagi mahsulotlar'
@@ -100,55 +95,25 @@ error_text_fio_and_phone = {
 }
 
 
-def text_info_product(lang: str, title: str, price: str, structure: str,
-                      vitamins: str, description: str, quantity: str) -> str:
+def text_info_product(lang: str, title: str, price: str, description: str) -> str:
     if lang == 'RU':
-        if structure == '-' and vitamins == '-':
-            text = f'''
+        text = f'''
 Название продукта: {title}.\n 
-Стоимость: {price}.\n 
-Кол-во: {quantity}.\n 
-Описание: {description}.
-
-Товар не является лекарственным средством 
-'''
-            return text
-        else:
-            text = f'''
-Название продукта: {title}.\n 
-Стоимость: {price}.\n 
-Кол-во: {quantity}.\n 
-Состав: {structure}.\n 
-Витамины: {vitamins}.\n 
-Описание: {description}.
+Стоимость: {price} сум.\n 
+{description}.
 
 Товар не является лекарственным средством 
 '''
         return text
-
     elif lang == 'UZ':
 
-        if structure == '-' and vitamins == '-':
-            text = f'''
+        text = f'''
 Mahsulot nomi: {title}\n 
-Narxi: {price}\n 
-Soni: {quantity}\n 
-Tavsif: {description}
+Narxi: {price} so'm\n 
+{description}
 
 Mahsulot dori emas
         '''
-            return text
-        else:
-            text = f'''
-Mahsulot nomi: {title}\n 
-Narxi: {price}\n 
-Soni: {quantity}\n 
-Tarkibi: {structure}\n 
-Vitaminlar: {vitamins}\n 
-Tavsif: {description}
-
-Mahsulot dori emas
-'''
         return text
 
 

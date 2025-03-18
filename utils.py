@@ -25,17 +25,13 @@ class CreateProductState(StatesGroup):
     image_path = State()
     title = State()
     price = State()
-    structure = State()
-    vitamins = State()
     description = State()
-    quantity = State()
     category_name = State()
 
 
 class EditProductState(StatesGroup):
     title = State()
     price = State()
-    quantity = State()
 
 
 class CreateCategoryState(StatesGroup):

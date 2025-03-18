@@ -146,47 +146,8 @@ async def get_description_product(message: Message, state: FSMContext):
     lang = db_users.get_lang(chat_id)
 
     await state.update_data(description=description)
-    await message.answer('Введите состав продукта' if lang == 'RU' else "Mahsulot tarkibini kiriting")
-    await state.set_state(CreateProductState.structure)
-
-
-
-@txt_admin_router.message(CreateProductState.structure)
-async def get_quantity_product(message: Message, state: FSMContext):
-    structure = message.text
-    chat_id = message.chat.id
-    lang = db_users.get_lang(chat_id)
-
-    await state.update_data(structure=structure)
-    await message.answer('Введите витамины продукта' if lang == 'RU' else "Mahsulot vitaminlarini kiriting")
-    await state.set_state(CreateProductState.vitamins)
-
-
-@txt_admin_router.message(CreateProductState.vitamins)
-async def get_quantity_product(message: Message, state: FSMContext):
-    vitamins = message.text
-    chat_id = message.chat.id
-    lang = db_users.get_lang(chat_id)
-
-    await state.update_data(vitamins=vitamins)
-    await message.answer('Введите кол-во продукта' if lang == 'RU' else "Mahsulot miqdorini kiriting")
-    await state.set_state(CreateProductState.quantity)
-
-
-@txt_admin_router.message(CreateProductState.quantity)
-async def get_quantity_product(message: Message, state: FSMContext):
-    quantity = message.text
-    chat_id = message.chat.id
-    lang = db_users.get_lang(chat_id)
-    check_quantity = quantity.isdigit()
-    if check_quantity is True:
-        await state.update_data(quantity=int(quantity))
-        await message.answer('Отправьте фотографию продукта' if lang == 'RU' else "Mahsulot fotosuratini yuboring")
-        await state.set_state(CreateProductState.image_path)
-    else:
-        text = error_text_get_quantity[lang]
-        await message.answer(text)
-        await state.set_state(CreateProductState.quantity)
+    await message.answer('Отправьте фотографию продукта' if lang == 'RU' else "Mahsulot fotosuratini yuboring")
+    await state.set_state(CreateProductState.image_path)
 
 
 @txt_admin_router.message(CreateProductState.image_path, F.photo)
@@ -218,18 +179,14 @@ async def get_category_name_product(message: Message, state: FSMContext):
     lang_for_product = data['lang']
     title = data['title']
     price = data['price']
-    structure = data['structure']
-    vitamins = data['vitamins']
     description = data['description']
-    quantity = data['quantity']
     image_path = data['image_path']
     category_name = message.text
     category_id = db_products.get_cat_id_for_name(category_name)
     await state.clear()
 
     lang = db_users.get_lang(chat_id)
-    db_products.save_product((image_path, title, price, structure, vitamins, description, quantity,
-                              lang_for_product, category_id))
+    db_products.save_product((image_path, title, price, description, lang_for_product, category_id))
 
     await message.answer(
         'Продукт сохранен, выберете действия' if lang == 'RU' else "Mahsulot saqlanadi, amallarni tanlang",

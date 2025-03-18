@@ -28,11 +28,6 @@ class SQLCartsPart(SQLBaseConnect):
 
     def clear_cart(self, cart_id: int) -> None:
         sql = '''
-            UPDATE products p
-            SET quantity = quantity + (
-                SELECT cp.quantity FROM cart_products cp
-                WHERE cp.product_id = p.product_id AND cp.cart_id = %s
-            )
             WHERE EXISTS (
                 SELECT 1 FROM cart_products cp WHERE cp.product_id = p.product_id AND cp.cart_id = %s
             );
@@ -73,10 +68,7 @@ class SQLCartsPart(SQLBaseConnect):
                     FROM cart_products WHERE cart_id = %(cart_id)s
                 ) AS info
                 WHERE cart.cart_id = %(cart_id)s;
-                
-            UPDATE products SET
-                quantity = quantity - %(quantity)s
-            WHERE product_id = %(product_id)s;
+        
         ''', {
             'cart_id': cart_id,
             'product_id': product_id,

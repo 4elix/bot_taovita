@@ -41,15 +41,16 @@ def btn_start_menu(lang: str, tg_id: int) -> Any:
             [KeyboardButton(text='Работа с продуктом 🛠' if lang == 'RU' else "Mahsulot bilan ishlash 🛠")],
             [KeyboardButton(text='Посмотреть категории 📚' if lang == 'RU' else "Kategoriyalarni ko'rish 📚")],
             [KeyboardButton(text='Поменять язык 🌍' if lang == 'RU' else "Tilni o'zgartiring 🌍")],
-            [KeyboardButton(text='Список отзывов 📜' if lang == 'RU' else "Tilni o'zgartiring 📜")],
+            [KeyboardButton(text='Список отзывов 📜' if lang == 'RU' else "Natija ro'yxati 📜")],
             [KeyboardButton(text='Текущие Сделки 🤝' if lang == 'RU' else "Joriy Bitimlar 🤝")]
         ]
     elif status_user == 'CEO':
         btn = [
             [KeyboardButton(text='Работа с персоналом 🛠' if lang == 'RU' else "Xodimlar bilan ishlash 🛠")],
             [KeyboardButton(text='Посмотреть категории 📚' if lang == 'RU' else "Kategoriyalarni ko'rish 📚")],
-            [KeyboardButton(text='Список отзывов 📜' if lang == 'RU' else "Tilni o'zgartiring 📜")],
+            [KeyboardButton(text='Список отзывов 📜' if lang == 'RU' else "Natija ro'yxati 📜")],
             [KeyboardButton(text='Поменять язык 🌍' if lang == 'RU' else "Tilni o'zgartiring 🌍")],
+            [KeyboardButton(text='Текущие Сделки 🤝' if lang == 'RU' else "Joriy Bitimlar 🤝")],
             [KeyboardButton(text='Информация по продажам 📖' if lang == 'RU' else "Savdo haqida ma'lumot 📖")]
         ]
 

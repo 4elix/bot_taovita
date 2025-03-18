@@ -8,12 +8,11 @@ db_carts = SAM().carts
 
 
 def btn_to_cart_menu(lang: str, product_id: int, price: int, current_quantity: int = 0) -> Any:
-    product_quantity = db_products.get_product_quantity(product_id)
 
     inline = InlineKeyboardMarkup(inline_keyboard=[
         [
             InlineKeyboardButton(text='-', callback_data=f'minus_{product_id}_{current_quantity}'),
-            InlineKeyboardButton(text=f'{current_quantity}/{product_quantity}', callback_data=f'empty?'),
+            InlineKeyboardButton(text=f'{current_quantity}', callback_data=f'empty?'),
             InlineKeyboardButton(text='+', callback_data=f'plus_{product_id}_{current_quantity}')
         ],
         [

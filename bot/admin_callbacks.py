@@ -4,7 +4,7 @@ from aiogram import Router
 from aiogram.types import CallbackQuery, Message
 from aiogram.fsm.context import FSMContext
 
-from ghostwriter import error_text_get_price, error_text_get_quantity, text_cart_for_admin
+from ghostwriter import error_text_get_price, text_cart_for_admin
 from keyboards.btn_inline import btn_is_pay, btn_action_change_product
 from utils import GetProductForDelete, EditProductState
 from keyboards.btn_text import btn_action_product, btn_start_menu
@@ -46,39 +46,21 @@ async def get_price_product(message: Message, state: FSMContext):
     check_price = price.isdigit()
     if check_price is True:
         await state.update_data(price=int(price))
-        await message.answer('Введите новое количество продукта' if lang == 'RU' else "Yangi mahsulot miqdorini kiriting")
-        await state.set_state(EditProductState.quantity)
+        data = await state.get_data()
+        title = data['title']
+        price = data['price']
+        await state.clear()
+
+        lang = db_users.get_lang(chat_id)
+        db_products.update_product((price, title))
+        await message.answer(
+            'Данные продукта изменены, выберете действия' if lang == 'RU' else "Mahsulot saqlanadi, amallarni tanlang",
+            reply_markup=btn_start_menu(lang, chat_id))
+
     else:
         text = error_text_get_price[lang]
         await message.answer(text)
         await state.set_state(EditProductState.price)
-
-
-@admin_call_router.message(EditProductState.quantity)
-async def get_quantity_product(message: Message, state: FSMContext):
-    quantity = message.text
-    chat_id = message.chat.id
-    lang = db_users.get_lang(chat_id)
-    check_quantity = quantity.isdigit()
-    if check_quantity is True:
-        await state.update_data(quantity=int(quantity))
-        chat_id = message.chat.id
-
-        data = await state.get_data()
-        title = data['title']
-        price = data['price']
-        quantity = data['quantity']
-        await state.clear()
-
-        lang = db_users.get_lang(chat_id)
-        db_products.update_product((price, quantity, title))
-        await message.answer(
-            'Данные продукта изменены, выберете действия' if lang == 'RU' else "Mahsulot saqlanadi, amallarni tanlang",
-            reply_markup=btn_start_menu(lang, chat_id))
-    else:
-        text = error_text_get_quantity[lang]
-        await message.answer(text)
-        await state.set_state(EditProductState.quantity)
 
 
 @admin_call_router.callback_query(lambda call: 'delete_product' in call.data)

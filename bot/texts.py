@@ -111,7 +111,7 @@ async def reach_btn_contact(message: Message, state: FSMContext):
 
 
 @txt_router.message(F.text.in_(['Посмотреть категории 📚', "Kategoriyalarni ko'rish 📚"]))
-async def show_categories(message: Message, state: FSMContext):
+async def show_list_categories(message: Message, state: FSMContext):
     chat_id = message.chat.id
     lang = db_users.get_lang(chat_id)
     text = 'Список категорий' if lang == 'RU' else "Kategoriyalar ro'yxati"
@@ -126,15 +126,14 @@ async def show_categories(message: Message, state: FSMContext):
     lang = db_users.get_lang(chat_id)
     await state.update_data(category_name=category_name)
     print(category_name)
-
-    if category_name == 'Menyuga qaytish 🔙' or category_name == 'Назад в меню 🔙':
+    print(category_name in ['Menyuga qaytish 🔙', 'Назад в меню 🔙'])
+    if category_name in ['Menyuga qaytish 🔙', 'Назад в меню 🔙']:
         await state.clear()
         await message.answer('Хорошо' if lang == 'RU' else 'Yaxshi', reply_markup=btn_start_menu(lang, chat_id))
         return
 
     else:
         try:
-            await state.clear()
             cat_id = db_products.get_cat_id_for_name(category_name)
             products = db_products.show_list_products(cat_id[0], lang)
             text = text_list_categories[lang]
@@ -142,7 +141,7 @@ async def show_categories(message: Message, state: FSMContext):
             await state.set_state(ShowProductState.product_name)
         except Exception as error:
             await state.clear()
-            await message.answer('Произошла ошибка, попробуйте ещё раз' if lang == 'RU' else "Xato yuz berdi, yana urinib ko'ring",
+            await message.answer('попробуйте ещё раз нажать на кнопку' if lang == 'RU' else "tugmani yana bir marta bosishga harakat qiling",
                                  reply_markup=btn_start_menu(lang, chat_id))
             print(error)
 
@@ -160,10 +159,8 @@ async def show_product_info(message: Message, state: FSMContext):
         await state.set_state(ShowListProductForCategory.category_name)
         return
     else:
-        pk, image_path, title, price, \
-            structure, vitamins, description, \
-            quantity, lang, category_id = db_products.get_product_info(product_name)
-        text = text_info_product(lang, title, price, structure, vitamins, description, quantity)
+        pk, image_path, title, price, description, lang, category_id = db_products.get_product_info(product_name)
+        text = text_info_product(lang, title, price, description)
         await message.answer_photo(photo=FSInputFile(image_path), caption=text,
                                    reply_markup=btn_to_cart_menu(lang, pk, price))
 

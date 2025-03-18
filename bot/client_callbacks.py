@@ -22,7 +22,6 @@ async def prev_products(callback: CallbackQuery):
     chat_id = callback.message.chat.id
     lang = db_users.get_lang(chat_id)
 
-    print(quantity)
     if int(quantity) <= 0:
         await callback.answer()
     else:
@@ -39,13 +38,8 @@ async def next_products(callback: CallbackQuery):
     chat_id = callback.message.chat.id
     lang = db_users.get_lang(chat_id)
 
-    product_total_quantity = db_products.get_product_quantity(int(product_id))
-    if int(quantity) > int(product_total_quantity):
-        await callback.answer()
-    else:
-        quantity = int(quantity) + 1
-        await callback.message.edit_reply_markup(reply_markup=btn_to_cart_menu(lang, product_id,
-                                                                               int(price), int(quantity)))
+    quantity = int(quantity) + 1
+    await callback.message.edit_reply_markup(reply_markup=btn_to_cart_menu(lang, product_id, int(price), int(quantity)))
 
 
 @client_call_router.callback_query(lambda call: 'clear_cart' in call.data)

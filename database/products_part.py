@@ -7,23 +7,21 @@ except ImportError as error:
 class SQLProductsPart(SQLBaseConnect):
     def save_product(self, data: tuple) -> None:
         sql = '''
-            INSERT INTO products(image_path, title, price, structure, vitamins, description, quantity, lang, category_id)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+            INSERT INTO products(image_path, title, price, description, lang, category_id)
+            VALUES (%s, %s, %s, %s, %s, %s)
         '''
-        image_path, title, price, structure, vitamins, description, quantity, lang, category_id = data
-        self.manager(sql, image_path, title, price, structure, vitamins, description, quantity, lang, category_id,
-                     commit=True)
+        image_path, title, price, description, lang, category_id = data
+        self.manager(sql, image_path, title, price, description, lang, category_id, commit=True)
 
     def update_product(self, data: tuple) -> None:
         sql = '''
             UPDATE products SET 
-                price = %s, 
-                quantity = %s
+                price = %s
             WHERE title = %s
         '''
-        price, quantity, title = data
+        price, title = data
 
-        self.manager(sql, price, quantity, title, commit=True)
+        self.manager(sql, price, title, commit=True)
 
     def save_category(self, lang: str, category_name: str) -> None:
         sql = '''
@@ -31,13 +29,6 @@ class SQLProductsPart(SQLBaseConnect):
             VALUES (%s, %s)
         '''
         self.manager(sql, lang, category_name, commit=True)
-
-    def show_all_list_categories(self) -> tuple:
-        sql = '''
-            SELECT category_name FROM categories
-        '''
-        list_categories = self.manager(sql, fetchall=True)
-        return tuple([category[0] for category in list_categories])
 
     def show_list_categories(self, lang: str) -> tuple:
         sql = '''
@@ -62,15 +53,11 @@ class SQLProductsPart(SQLBaseConnect):
 
     def get_product_info(self, product_name: str) -> tuple:
         sql = '''
-            SELECT * FROM products WHERE title = %s
+            SELECT product_id, image_path, title, price, description, lang, category_id FROM products WHERE title = %s
         '''
         product_info = self.manager(sql, product_name, fetchone=True)
         if product_info is not None:
             return product_info
-
-    def get_product_quantity(self, product_id: int) -> tuple:
-        sql = "SELECT quantity FROM products WHERE product_id = %s;"
-        return self.manager(sql, product_id, fetchone=True)[0]
 
     def get_product_price(self, product_id: int) -> tuple:
         sql = "SELECT price FROM products WHERE product_id = %s;"

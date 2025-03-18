@@ -48,10 +48,7 @@ class CreationPart(SQLBaseConnect):
                     image_path TEXT,
                     title TEXT,
                     price INTEGER,
-                    structure TEXT,
-                    vitamins TEXT,
                     description TEXT,
-                    quantity INTEGER,
                     lang TEXT,
                     category_id INTEGER REFERENCES categories(category_id)
                 );
@@ -148,11 +145,11 @@ class CreationPart(SQLBaseConnect):
 
 
 creation = CreationPart()
-creation.db_create_users()
-creation.db_create_categories()
-creation.db_create_products()
-creation.db_create_feedback()
-creation.db_create_cart()
-creation.db_create_cart_for_products()
-creation.db_create_shipping()
-creation.db_create_history_buy()
+# creation.db_create_users()
+# creation.db_create_categories()
+# creation.db_create_products()
+# creation.db_create_feedback()
+# creation.db_create_cart()
+# creation.db_create_cart_for_products()
+# creation.db_create_shipping()
+# creation.db_create_history_buy()
