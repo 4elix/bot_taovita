@@ -26,7 +26,7 @@ def btn_to_cart_menu(lang: str, product_id: int, price: int, current_quantity: i
 def btn_apply(cart_id: int, lang: str) -> Any:
     btn = InlineKeyboardMarkup(inline_keyboard=[
         [
-            InlineKeyboardButton(text='Оформить' if lang == 'RU' else 'Tartibga solish',
+            InlineKeyboardButton(text='Оформить' if lang == 'RU' else 'Harid qabul qilinsin',
                                  callback_data=f'apply_{cart_id}'),
         ],
         [
