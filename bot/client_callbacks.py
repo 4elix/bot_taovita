@@ -102,8 +102,8 @@ async def get_address(message: Message, bot: Bot, state: FSMContext):
     sub_phone_number = data['sub_phone_number']
     await state.clear()
 
-    await message.answer('В течении минуты с вами свяжется администратор' if lang == 'RU' else
-                         "Bir daqiqa ichida administrator siz bilan bog'lanadi")
+    await message.answer('Благодарим вас за покупку, с вами свяжется администратор' if lang == 'RU' else
+                         "Xaridingiz uchun tashakkur, administrator siz bilan bog'lanadi")
 
     user_id, fio, email, phone_number = db_users.get_user(chat_id)[:4]
     total_price, total_quantity = db_carts.get_cart_info(user_id)

@@ -43,14 +43,7 @@ class CreationPart(SQLBaseConnect):
         try:
             sql = '''
                 DROP TABLE IF EXISTS products CASCADE;
-                CREATE TABLE IF NOT EXISTS products(
-                    product_id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-                    image_path TEXT,
-                    title TEXT,
-                    price INTEGER,
-                    description TEXT,
-                    lang TEXT,
-                    category_id INTEGER REFERENCES categories(category_id)
+                CREATE TABLE IF NOT EXISTS products(product_id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY, image_path TEXT, title TEXT, price INTEGER, description TEXT, lang TEXT, category_id INTEGER REFERENCES categories(category_id)
                 );
             '''
             self.manager(sql, commit=True)
